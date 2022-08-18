@@ -40,4 +40,4 @@ class WebHook(Resource):
 api.add_resource(WebHook, '/webhook')
 
 if __name__ == '__main__':
-    app.run(debug=False, port=80, host='0.0.0.0')
+    app.run(debug=False, port=8080, host='0.0.0.0')
