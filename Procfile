@@ -1,1 +1,1 @@
-app: export FLASK_ENV=production && python newrelic-telegram-relay.py
+app: python newrelic-telegram-relay.py
