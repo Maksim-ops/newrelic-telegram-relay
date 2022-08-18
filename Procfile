@@ -1,1 +1,1 @@
-app: python newrelic-telegram-relay.py
+web: gunicorn --bind 0.0.0.0:${PORT}
