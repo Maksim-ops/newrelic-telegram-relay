@@ -7,7 +7,10 @@ RUN pip install pipenv
 COPY Pipfile .
 COPY Pipfile.lock .
 
+RUN pip install flask flask_restful requests
+
 RUN pipenv install --deploy --ignore-pipfile
 
-COPY newrelic-telegram-relay.py .
-COPY telegram.py .
+COPY . .
+
+CMD [ "python", "./main.py" ]

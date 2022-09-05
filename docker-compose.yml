@@ -1,0 +1,13 @@
+version: '3.3'
+services:
+
+  newrelic-telegram-relay:
+    container_name: newrelic-telegram-relay
+    build: git@github.com:Maksim-ops/newrelic-telegram-relay.git
+    network_mode: bridge
+    restart: unless-stopped
+    ports:
+      - 5000:5000
+    environment:
+      - BOT_TOKEN=<bot_token>
+      - CHAT_ID=<chat_id>
