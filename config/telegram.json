@@ -1,4 +1,4 @@
 {
-    "botToken": "os.environ['BOT_TOKEN']",
-    "chatId": "os.environ['CHAT_ID']"
+    "botToken": "%BOT_TOKEN%",
+    "chatId": "%CHAT_ID%"
 }
