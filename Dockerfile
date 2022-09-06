@@ -11,4 +11,4 @@ RUN pipenv install --deploy --ignore-pipfile
 
 COPY . .
 
-CMD [ "python", "./main.py" ]
+CMD [ "main.sh" ]
