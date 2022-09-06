@@ -12,4 +12,8 @@ def send_telegram_message(token, chat_id, message):
         "parse_mode": "Markdown"
     }
 
-    requests.post(host, headers=headers, data=json.dumps(payload))
+    try:
+        r = requests.get(url, params={'s': thing})
+        return r
+    except requests.exceptions.RequestException as e:
+        return e
