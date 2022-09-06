@@ -1,19 +1,44 @@
-import requests
+from flask import Flask, request
+from flask_restful import Resource, Api
+from telegram import send_telegram_message
 import json
+import os
 
-def send_telegram_message(token, chat_id, message):
-    host = 'https://api.telegram.org/bot' + token + '/sendMessage'
-    headers = {'Content-Type': 'application/json'}
+app = Flask(__name__)
+api = Api(app)
 
-    payload = {
-        "chat_id": chat_id,
-        "text": message,
-        "disable_notification": False,
-        "parse_mode": "Markdown"
-    }
+with open('config/telegram.json') as f:
+    telegram_config = json.load(f)
 
-    try:
-        res = requests.post(host, headers=headers, data=json.dumps(payload))
-        return json.dumps(res.text)
-    except requests.exceptions.RequestException as e:
-        return json.dumps(e)
+token = telegram_config['botToken']
+chat_id = telegram_config['chatId']
+
+class WebHook(Resource):
+    def post(self):
+        payload = request.json
+        print('Received webhook.')
+        print(payload)
+        print('Sending message to telegram chat: ' + chat_id)
+        state = payload.get('current_state')
+        if state == 'open':
+            state_title = '🚨 ' + \
+                payload.get('event_type') + ' ' + state
+        else:
+            state_title = '✅ ' + \
+                payload.get('event_type') + ' ' + state
+        message = "*" + state_title + '*\n' \
+            '*Policy*: ' + payload.get('policy_name') + '\n' \
+            '*Details*: ' + payload.get('details') + '\n' \
+            '*Time*: ' + payload.get('timestamp_utc_string') + '\n' \
+            '[Chart](' + payload.get('violation_chart_url') + ')'
+        try:
+            return send_telegram_message(token, chat_id, message)
+        except Exception as e:
+            return json.dumps(e)
+
+
+api.add_resource(WebHook, '/webhook')
+
+if __name__ == '__main__':
+    # Bind to PORT if defined, otherwise default to 5000.
+    app.run(host='0.0.0.0', port=5000)
