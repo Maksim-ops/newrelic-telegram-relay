@@ -12,7 +12,7 @@ with open('config/telegram.json') as f:
     telegram_config = json.load(f)
 
 token = telegram_config['botToken']
-chat_ids = telegram_config['receiverChatIds']
+chat_id = telegram_config['chatId']
 
 
 class WebHook(Resource):
@@ -20,21 +20,24 @@ class WebHook(Resource):
         payload = request.json
         print('Received webhook.')
         print(payload)
-        for chat_id in chat_ids:
-            print('Sending message to telegram chat: ' + chat_id)
-            state = payload.get('current_state')
-            if state == 'open':
-                state_title = '🚨 ' + \
-                    payload.get('event_type') + ' ' + state
-            else:
-                state_title = '✅ ' + \
-                    payload.get('event_type') + ' ' + state
-            message = "*" + state_title + '*\n' \
-                '*Policy*: ' + payload.get('policy_name') + '\n' \
-                '*Details*: ' + payload.get('details') + '\n' \
-                '*Time*: ' + payload.get('timestamp_utc_string') + '\n' \
-                '[Chart](' + payload.get('violation_chart_url') + ')'
-            send_telegram_message(token, chat_id, message)
+        print('Sending message to telegram chat: ' + chat_id)
+        state = payload.get('current_state')
+        if state == 'open':
+            state_title = '🚨 ' + \
+                payload.get('event_type') + ' ' + state
+        else:
+            state_title = '✅ ' + \
+                payload.get('event_type') + ' ' + state
+        message = "*" + state_title + '*\n' \
+            '*Policy*: ' + payload.get('policy_name') + '\n' \
+            '*Details*: ' + payload.get('details') + '\n' \
+            '*Time*: ' + payload.get('timestamp_utc_string') + '\n' \
+            '[Chart](' + payload.get('violation_chart_url') + ')'
+        try:
+            r = send_telegram_message(token, chat_id, message)
+            return r
+        except Exception as e:
+            return e
         return 'OK'
 
 
