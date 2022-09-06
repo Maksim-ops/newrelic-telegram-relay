@@ -6,14 +6,14 @@ def send_telegram_message(token, chat_id, message):
     headers = {'Content-Type': 'application/json'}
 
     payload = {
-        "chat_id": chat_id, 
-        "text": message, 
+        "chat_id": chat_id,
+        "text": message,
         "disable_notification": False,
         "parse_mode": "Markdown"
     }
 
     try:
-        r = requests.post(host, headers=headers, data=json.dumps(payload))
-        return r
-    except Exception as e:
-        return e
+        res = requests.post(host, headers=headers, data=json.dumps(payload))
+        return json.dumps(res.text)
+    except requests.exceptions.RequestException as e:
+        return json.dumps(e)
