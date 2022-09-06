@@ -12,4 +12,4 @@ RUN pipenv install --deploy --ignore-pipfile
 COPY . .
 RUN chmod +x ./main.sh
 
-CMD [ "main.sh" ]
+CMD [ "./main.sh" ]
