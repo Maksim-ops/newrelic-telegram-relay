@@ -13,7 +13,7 @@ def send_telegram_message(token, chat_id, message):
     }
 
     try:
-        r = requests.get(url, params={'s': thing})
+        r = requests.post(host, headers=headers, data=json.dumps(payload))
         return r
-    except requests.exceptions.RequestException as e:
+    except Exception as e:
         return e
