@@ -28,8 +28,8 @@ class WebHook(Resource):
             chat_id_loc = chat_id
         print('Sending message to telegram chat: ' + chat_id_loc)
         try:
-            res = send_telegram_message(bot_token_loc, chat_id_loc, json.dumps(payload))
-            return res
+            response = send_telegram_message(bot_token_loc, chat_id_loc, json.dumps(payload))
+            return response
         except Exception as e:
             return e
 
