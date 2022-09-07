@@ -14,6 +14,6 @@ def send_telegram_message(token, chat_id, message):
 
     try:
         res = requests.post(host, headers=headers, data=json.dumps(payload))
-        return json.dumps(res.text)
+        return json.dumps(res)
     except Exception as e:
         return json.dumps(e)
