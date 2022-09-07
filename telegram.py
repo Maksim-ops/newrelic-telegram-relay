@@ -13,7 +13,7 @@ def send_telegram_message(token, chat_id, message):
     }
 
     try:
-        res = requests.post(host, headers=headers, data=json.dumps(payload))
-        return json.dumps(res)
+        response = requests.post(host, headers=headers, data=json.dumps(payload))
+        return response.json()
     except Exception as e:
         return json.dumps(e)
