@@ -19,12 +19,16 @@ class WebHook(Resource):
         print('Received webhook.')
         print(payload)
         if hasattr(payload, 'bot_token'):
-            bot_token = payload.get('bot_token')
+            bot_token_loc = payload.get('bot_token')
+        else:
+            bot_token_loc = bot_token
         if hasattr(payload, 'chat_id'):
-            chat_id = payload.get('chat_id')
-        print('Sending message to telegram chat: ' + chat_id)
+            chat_id_loc = payload.get('chat_id')
+        else:
+            chat_id_loc = chat_id
+        print('Sending message to telegram chat: ' + chat_id_loc)
         try:
-            res = send_telegram_message(bot_token, chat_id, json.dumps(payload))
+            res = send_telegram_message(bot_token_loc, chat_id_loc, json.dumps(payload))
             return res
         except Exception as e:
             return e
